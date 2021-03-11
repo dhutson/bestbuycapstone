@@ -2,7 +2,7 @@
 Group capstone project for QRPT2
 
 This project showcases our collaborative automation efforts to test
-someSite.
+Bestbuy.com.
 
 Authors:
 
