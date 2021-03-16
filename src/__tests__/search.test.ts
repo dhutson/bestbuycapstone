@@ -1,8 +1,7 @@
-import { WebDriver } from "selenium-webdriver";
-import { SearchPage } from "./SearchPage";
+import { pageObjects } from "../PageObjects";
 
 describe("Best Buy", () => {
-    const page = new SearchPage();
+    const page = new pageObjects();
     beforeEach(async () => {
         await page.navigate();
     });
