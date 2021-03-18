@@ -6,7 +6,6 @@ describe("Best Buy", () => {
         await page.navigate();
     });
     test("Searching a product", async () => {
-        await page.findElement();
         await page.searchFor("Airpods pro");
         let ResultsSearch = await page.getResultsSearch();
         expect(ResultsSearch).toEqual(ResultsSearch);
