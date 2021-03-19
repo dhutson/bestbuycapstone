@@ -1,4 +1,5 @@
 import { pageObjects } from "../PageObjects";
+const chromedriver = require("chromedriver");
 
 describe("Best Buy", () => {
     const page = new pageObjects();
