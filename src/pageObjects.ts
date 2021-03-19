@@ -1,6 +1,4 @@
 import { WebDriver, until, By, Capabilities, Builder } from "selenium-webdriver";
-
-
 /**
  * SearchPage is a page object pointing to Best Buy's page.
  * It has methods to navigate there, to enter input and to receive matching results.
@@ -16,25 +14,24 @@ export class pageObjects {
     SearchBar: By = By.css("#gh-search-input");
     /** the selector for the product searched (airpods pro) */
     ResultsSearch: By = By.xpath('//a[text()="Apple - AirPods Pro - White"]');
-    /** the selector for save items badge */
-    SaveItem: By = By.xpath('//*[@id="shop-save-for-later-9b122279-ec4b-4a8a-8bf1-6fac86dca6b0"]/div/div/div/button');
-    /** the selector for saved items list */
-    SavedItems: By = By.css("button[data-lid='hdr_saved']");
     /** the selector will close pop up */
     ClosePopUp: By = By.css('button[class="c-close-icon  c-modal-close-icon"]');
     /** The selector for submit search */
     SearchButton: By = By.css('.header-search-icon');
-
-
+    /** the selector for save items badge */
+    SaveItem: By = By.xpath('(//button[@class="save-for-later-save"])[1]');
+    /** the selector to go to saved items */
+    GoSavedItems: By = By.css('a[href="/site/customer/lists/manage/saveditems"]');
+    /** the selector for the airpods in the saved list */
+    AirpodsSaved: By = By.css('a[id="skuId-5706659"]');
 
     constructor (driver?: WebDriver) {
         if (driver) this.driver=driver
         else this.driver = new Builder()
         .withCapabilities(Capabilities.chrome()).build()
-        
     }
 
-    /** will navigate to https://www.bestbuy.com/ */
+    /** will navigate to https://www.bestbuy.com/, close pop up and locate search bar */
     async navigate() {
         await this.driver.get(this.url);
         await this.driver.findElement(this.ClosePopUp).click();
@@ -42,17 +39,7 @@ export class pageObjects {
         await this.driver.wait(until.elementIsVisible(await this.driver.findElement(this.SearchBar)));
     }
 
-    /** will locate the search bar */
-    //async findElement() {
-        //await this.driver.wait(until.elementLocated(this.SearchBar));
-    //}
-
-    /** will click on the Search Bar and enter the search input, hitting enter */
-    //async searchFor(searchTerm: string) {
-        //await this.click(this.SearchBar);
-        //await this.driver.switchTo().activeElement().sendKeys(`${searchTerm}\n`);
-        //await this.driver.wait(until.elementLocated(this.ResultsSearch));
-    //}
+    /** will find search bar, enter input to search and search */
     async searchFor(searchTerm: string) {
         await this.driver.findElement(this.SearchBar).sendKeys(`${searchTerm}`);
         await this.driver.findElement(this.SearchButton).click();
@@ -68,9 +55,23 @@ export class pageObjects {
         await this.driver.wait(until.elementsLocated(this.ResultsSearch));
     }
 
-
     async click(elementBy: By) {
         await this.driver.wait(until.elementLocated(elementBy));
         return (await this.driver.findElement(elementBy)).click();
     }
+
+    async save() {
+        await this.driver.findElement(this.SaveItem).click();
+    }
+
+    async savedList() {
+        await this.driver.findElement(this.SaveItem).click();
+        await this.driver.findElement(this.GoSavedItems).click();
+        // await this.driver.findElement(this.AirpodsSaved);
+    }
+
+    async getSavedItem() {
+        await this.driver.wait(until.elementsLocated(this.AirpodsSaved));
+    }
+
 };
