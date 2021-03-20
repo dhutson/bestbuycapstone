@@ -6,10 +6,11 @@ describe("Best Buy", () => {
     beforeEach(async () => {
         await page.navigate();
     });
-    test("Searching a product", async () => {
-        await page.searchFor("Airpods pro");
-        let ResultsSearch = await page.getResultsSearch();
-        expect(ResultsSearch).toEqual(ResultsSearch);
+
+    test("Can view top deals", async () => {
+        await page.viewDeals();
+        let topDealsHdr = await page.verifyDeals();
+        expect(topDealsHdr).toEqual(topDealsHdr);
     });
     afterAll(async () => {
         await page.driver.quit();
