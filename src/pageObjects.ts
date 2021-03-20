@@ -43,7 +43,7 @@ export class pageObjects {
     /**Selectors for account login */
     accountHdr: By = By.css('button[data-lid="hdr_signin"]');
     /**Sign in button */
-    signIn: By = By.css('a[class="lam-signIn__button btn btn-secondary"]');
+    signIn: By = By.xpath('//a[text()="Sign In"]') 
     /** Email address field */
     emailInput: By = By.css('#fld-e');
     /** Account password field */
@@ -115,11 +115,12 @@ export class pageObjects {
         await this.driver.findElement(this.GoSavedItems).click();
         await this.driver.findElement(this.savedAdd).click();
     }
-
+    // adds saved item from list into cart
     async addToCart() {
         await this.driver.findElement(this.airPodsPro).click();
 
     }
+    // checkout user flow which goes through cart flow and confirms final payment page
     async checkoutCart() {
         await this.driver.findElement(this.goToCart).click();
         await this.driver.findElement(this.checkOut).click();
@@ -129,9 +130,9 @@ export class pageObjects {
     
     //Select and enter email address for account login
     async accountLogin() {
-        await this.driver.findElement(this.accountHdr).click();
-        await this.driver.findElement(this.signIn).click();
-
+        await this.driver.wait(until.elementLocated(this.accountHdr));
+        await (await this.driver.wait(until.elementIsVisible(await this.driver.findElement(this.accountHdr)))).click();
+        await (await this.driver.wait(until.elementIsVisible(await this.driver.findElement(this.signIn)))).click();
     }
     async enterEmail(email: string) {
         await this.driver.findElement(this.emailInput).click();
@@ -149,7 +150,7 @@ export class pageObjects {
     }
     async errorSignin() {
         await this.driver.wait(until.elementLocated(this.errorLogin));
-        let errorMessage = await (await this.driver.findElement(this.errorLogin)).getText()
+        let errorMessage = await (await this.driver.findElement(this.errorLogin)).getText();
         console.log(errorMessage);
         return errorMessage;
     }

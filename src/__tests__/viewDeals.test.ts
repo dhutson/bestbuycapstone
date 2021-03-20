@@ -12,4 +12,7 @@ describe("Best Buy", () => {
         let topDealsHdr = await page.verifyDeals();
         expect(topDealsHdr).toEqual(topDealsHdr);
     });
+    afterAll(async () => {
+        await page.driver.quit();
+    });
 });
